@@ -11,18 +11,27 @@
     <p>Bienvenido, {{ user.username }}</p>
     <a href="{% url 'logout' %}">Cerrar sesión</a>
 
+<h3>Categorias</h3>
+
+    <ul>
+    {% for categoria in categorias %}
+        <li><a href="{% url 'productos_por_categoria' categoria.categoria %}">{{ categoria.categoria }}</a></li>
+    {% endfor %}
+</ul>
+
+
 <form method="GET" action="{% url 'buscar' %}">
     <input type="text" name="q" placeholder="Buscar...">
     <button type="submit">Buscar</button>
 </form>
 {% for producto in productos %}
-    <a href="{% url 'detail' producto.id %}"><h2>{{ producto.nombre }}</h2></a>
+    <a href="{% url 'detail' producto.id %}"><h4>{{ producto.nombre }}</h4></a>
 {% endfor %}
 
 {% else %}
     <p>Bienvenido, registrese o acceda para ver nuestros distintos cafes</p>
+<a href="{% url 'login' %}">Acceder</a>
+<a href="{% url 'registro' %}">Registrarse</a>
 {% endif %}
-<a href="{% url 'registro' %}">Registrarse</a> <a href="{% url 'login' %}">Acceder</a>
-
 </body>
 </html>

@@ -9,9 +9,12 @@ from .forms import LoginForm
 def home(request):
     username = request.user.username
     productos = Producto.objects.all()
+    categorias = Producto.objects.values('categoria').distinct()
+
     context = {
         'productos': productos,
-        'username': username
+        'categorias': categorias,
+        'username': username,
     }
     return render(request, 'Paginacompras/home.html', context)
 
@@ -60,6 +63,15 @@ def login_view(request):
     context = {'form': form}
     return render(request, 'Paginacompras/login.html', context)
 
+
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+
+def productos_por_categoria(request, categoria):
+    productos = Producto.objects.filter(categoria=categoria)
+    context = {
+        'productos': productos
+    }
+    return render(request, 'Paginacompras/productos_por_categoria.html', context)
