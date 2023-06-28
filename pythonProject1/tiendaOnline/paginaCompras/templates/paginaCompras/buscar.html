@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de búsqueda</title>
+</head>
+<body>
+    <h1>Resultados de búsqueda</h1>
+    {% if productos %}
+        {% for producto in productos %}
+            <a href="{% url 'detail' producto.id %}"><h2>{{ producto.nombre }}</h2></a>
+            <p>{{ producto.descripcion }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No se encontraron resultados</p>
+    {% endif %}
+</body>
+</html>

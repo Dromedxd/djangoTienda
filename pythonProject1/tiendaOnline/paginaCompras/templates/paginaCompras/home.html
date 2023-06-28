@@ -5,9 +5,24 @@
     <title>Home</title>
 </head>
 <body>
-<p>Este es el inicio</p>
+
+
+{% if user.is_authenticated %}
+    <p>Bienvenido, {{ user.username }}</p>
+    <a href="{% url 'logout' %}">Cerrar sesión</a>
+
+<form method="GET" action="{% url 'buscar' %}">
+    <input type="text" name="q" placeholder="Buscar...">
+    <button type="submit">Buscar</button>
+</form>
 {% for producto in productos %}
     <a href="{% url 'detail' producto.id %}"><h2>{{ producto.nombre }}</h2></a>
 {% endfor %}
+
+{% else %}
+    <p>Bienvenido, registrese o acceda para ver nuestros distintos cafes</p>
+{% endif %}
+<a href="{% url 'registro' %}">Registrarse</a> <a href="{% url 'login' %}">Acceder</a>
+
 </body>
 </html>

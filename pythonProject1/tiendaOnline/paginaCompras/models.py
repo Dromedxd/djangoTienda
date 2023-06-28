@@ -22,12 +22,3 @@ class ProductoHome(models.Model):
         return self.producto.nombre
 
 
-class Cliente(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    correo_electronico = models.CharField(max_length=200)
-    telefono = models.CharField(max_length=20)
-    fecha_registro = models.DateTimeField(auto_now_add=True)
-    password = models.CharField(max_length=32)
-
-    def __str__(self):
-        return self.user.username
