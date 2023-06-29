@@ -1,73 +1,79 @@
 /* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-  }
-
-  /* Estilos del encabezado */
-  header {
-    background-color: #333;
-    padding: 20px;
-    color: white;
-  }
-
-  header h1 {
-    margin: 0;
-    font-size: 24px;
-  }
-
-  /* Estilos del menú de navegación */
-  nav {
-    background-color: #555;
-    padding: 10px;
-  }
-
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  nav ul li {
-    display: inline;
-    margin-right: 10px;
-  }
-
-  nav ul li a {
-    text-decoration: none;
-    color: white;
-    padding: 5px 10px;
-  }
-
-  /* Estilos del contenido principal */
-  main {
-    padding: 20px;
-  }
-
-  #propiedades{
-	float:left;
-	margin-left:2%;
-	align-items: center;
+  font-family: Arial, sans-serif;
+  background-color: #FFD491;
+  margin: 0;
+  padding: 0;
 }
 
+/* Estilos del encabezado */
+header {
+  background-color: #975012;
+  padding: 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+}
 
+header h1 {
+  margin: 0;
+  font-size: 24px;
+  flex: 1;
+}
 
-  /* Estilos de los enlaces */
-  a {
-    text-decoration: none;
-    color: #333;
-  }
+/* Estilos del menú de navegación */
+nav {
+  color: #f5f5f5;
+  background-color: #975012;
+  padding: 10px;
+  flex: 1;
+}
 
-  a:hover {
-    text-decoration: underline;
-  }
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
-  /* Estilos del pie de página */
-  footer {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    text-align: center;
-  }
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  padding: 5px 10px;
+}
+
+#carrito {
+  margin-left: auto;
+}
+
+#carrito img {
+  width: 50px;
+  height: auto;
+}
+
+/* Estilos del contenido principal */
+main {
+  padding: 20px;
+}
+
+/* Estilos de los enlaces */
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Estilos del pie de página */
+footer {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
