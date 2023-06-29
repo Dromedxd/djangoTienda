@@ -4,8 +4,9 @@
     <title>Home</title>
 </head>
 <body>
-    <h1>Bienvenido, {{ username }}</h1>
+    {% if user.is_authenticated %}
 
+    <a href="{% url 'home' %}">Volver al inicio</a>
     <h2>Categorías:</h2>
     <ul>
         {% for categoria in categorias %}
@@ -16,7 +17,9 @@
     <h2>Productos:</h2>
     {% for producto in productos %}
     <h3>{{ producto.nombre }}</h3>
+    <img src="{{ producto.imagen }}" alt="Imagen del producto">
     <p>{{ producto.descripcion }}</p>
     {% endfor %}
+    {% endif %}
 </body>
 </html>

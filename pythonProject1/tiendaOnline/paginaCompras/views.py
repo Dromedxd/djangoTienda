@@ -71,7 +71,9 @@ def logout_view(request):
 
 def productos_por_categoria(request, categoria):
     productos = Producto.objects.filter(categoria=categoria)
+    categorias = Producto.objects.values('categoria').distinct()
     context = {
-        'productos': productos
+        'productos': productos,
+        'categorias': categorias,
     }
     return render(request, 'Paginacompras/productos_por_categoria.html', context)

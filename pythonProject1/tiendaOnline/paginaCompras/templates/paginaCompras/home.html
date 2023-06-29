@@ -13,7 +13,7 @@
 
 <h3>Categorias</h3>
 
-    <ul>
+<ul>
     {% for categoria in categorias %}
         <li><a href="{% url 'productos_por_categoria' categoria.categoria %}">{{ categoria.categoria }}</a></li>
     {% endfor %}

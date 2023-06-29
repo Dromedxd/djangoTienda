@@ -5,9 +5,12 @@
     <title>Detalle del producto</title>
 </head>
 <body>
+{% if user.is_authenticated %}
     <h2>{{ producto.nombre }}</h2>
     <p>{{ producto.descripcion }}</p>
     <p>Precio: {{ producto.precio }}</p>
     <p>Categoría: {{ producto.categoria }}</p>
+    <img src="{{ producto.imagen.url }}" alt="Imagen del producto">
+{% endif %}
 </body>
 </html>
