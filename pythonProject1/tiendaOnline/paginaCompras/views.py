@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Producto, Carrito
+from .models import Producto, Carrito, ItemCarrito
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegistroForm
 from .forms import LoginForm
+from django.core.exceptions import ObjectDoesNotExist
+from .models import RegistroCompra
 
 
 def home(request):
@@ -17,16 +19,6 @@ def home(request):
         'username': username,
     }
     return render(request, 'Paginacompras/home.html', context)
-
-
-def detail(request, producto_id):
-    producto = Producto.objects.get(id=producto_id)
-    context = {
-        'producto': producto
-    }
-    return render(request, 'Paginacompras/detail.html', context)
-
-
 
 def buscar(request):
     query = request.GET.get('q')
@@ -78,24 +70,76 @@ def productos_por_categoria(request, categoria):
     }
     return render(request, 'Paginacompras/productos_por_categoria.html', context)
 
-def carrito_usuario(request):
-    # Obtener el carrito del usuario actual
-    carrito = Carrito.objects.get(usuario=request.user)
 
-    # Obtener los productos del carrito
-    productos = carrito.productos.all()
+def detail(request, producto_id):
+    producto = Producto.objects.get(id=producto_id)
+    context = {
+        'producto': producto
+    }
+    return render(request, 'Paginacompras/detail.html', context)
+
+def ver_carrito(request):
+    try:
+        carrito = Carrito.objects.get(usuario=request.user)
+    except ObjectDoesNotExist:
+        carrito = Carrito.objects.create(usuario=request.user)
+
+    return render(request, 'Paginacompras/carrito.html', {'carrito': carrito})
+
+
+def añadir_al_carrito(request, producto_id):
+    if request.method == 'POST':
+        cantidad = request.POST.get('quantity')
+        if cantidad is not None:
+            producto = Producto.objects.get(id=producto_id)
+            carrito = Carrito.objects.get(usuario=request.user)
+            try:
+                item = ItemCarrito.objects.get(carrito=carrito, producto=producto)
+                item.cantidad += int(cantidad)
+            except ItemCarrito.DoesNotExist:
+                item = ItemCarrito(carrito=carrito, producto=producto, cantidad=int(cantidad))
+
+            item.save()
+
+    return redirect('detail', producto_id=producto_id)
+
+
+def vaciar_carrito(request):
+    if request.method == 'POST':
+        carrito = Carrito.objects.get(usuario=request.user)
+        carrito.items.all().delete()
+    return redirect('ver_carrito')
+
+
+from .models import RegistroCompra
+
+
+def confirmar_compra(request):
+    if request.method == 'POST':
+        carrito = Carrito.objects.get(usuario=request.user)
+
+        contenido_carrito = ""
+        for item in carrito.items.all():
+            contenido_carrito += f"{item.producto.nombre} - Cantidad: {item.cantidad}\n"
+
+        registro = RegistroCompra.objects.create(usuario=request.user, contenido_carrito=contenido_carrito)
+
+        carrito.items.all().delete()
+
+        return redirect('pedido')
+
+    elif request.method == 'GET':
+        # Lógica adicional para el método GET si es necesario
+        return redirect('ver_carrito')
+def pedido(request):
+    registro_compra = RegistroCompra.objects.filter(usuario=request.user).last()
+    contenido_carrito = ""
+    if registro_compra:
+        contenido_carrito = registro_compra.contenido_carrito
+    # Aquí puedes realizar cualquier otra lógica adicional necesaria
 
     context = {
-        'carrito': carrito,
-        'productos': productos
+        'contenido_carrito': contenido_carrito,
     }
+    return render(request, 'Paginacompras/pedido.html', context)
 
-    return render(request, 'Paginacompras/carrito.html', context)
-
-
-def agregar_al_carrito(request, producto_id):
-    producto = Producto.objects.get(id=producto_id)
-    carrito, created = Carrito.objects.get_or_create(usuario=request.user)
-    carrito.productos.add(producto)
-    carrito.actualizar_total()
-    return redirect('Paginacompras/carrito.html')

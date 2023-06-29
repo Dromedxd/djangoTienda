@@ -1,18 +1,57 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Carrito de compra</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilo.css' %}">
 </head>
 <body>
-    <h1>Carrito de compra</h1>
-    <p>Usuario: {{ carrito.usuario }}</p>
-    <p>Total: {{ carrito.total }}</p>
+    <h1>Contenido del carrito</h1>
 
-    <h2>Productos en el carrito:</h2>
+    {% if carrito.items.all %}
     <ul>
-        {% for producto in productos %}
-            <li>{{ producto.nombre }}</li>
+        {% for item in carrito.items.all %}
+        <li>{{ item.producto.nombre }} - Cantidad: {{ item.cantidad }}</li>
         {% endfor %}
     </ul>
+
+    <form action="{% url 'vaciar_carrito' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Vaciar Carrito</button>
+    </form>
+
+    <form id="confirmar-compra-form" action="{% url 'confirmar_compra' %}" method="POST">
+        {% csrf_token %}
+        <button type="button" onclick="mostrarCheck()">Confirmar Compra</button>
+    </form>
+
+    {% else %}
+    <p>El carrito está vacío.</p>
+    {% endif %}
+
+    <div id="popup" style="display: none;">
+        <h2>Confirmar Compra</h2>
+        <p>¿Estás seguro de que deseas confirmar la compra?</p>
+        <button type="button" onclick="ocultarCheck()">Cancelar</button>
+        <button type="submit" onclick="confirmarCheck()">Confirmar</button>
+    </div>
+
+    <script>
+        function mostrarCheck() {
+            var popup = document.getElementById("popup");
+            popup.style.display = "block";
+        }
+
+        function ocultarCheck() {
+            var popup = document.getElementById("popup");
+            popup.style.display = "none";
+        }
+
+        function confirmarCheck() {
+            var form = document.getElementById("confirmar-compra-form");
+            form.submit();
+        }
+    </script>
 </body>
 </html>

@@ -16,7 +16,10 @@ urlpatterns = [
     path('registro/', views.registro, name='registro'),
     path('login/', views.login_view, name='login'),
     path("logout/", views.logout_view, name="logout"),
-    path('carrito/', views.carrito_usuario, name='carrito'),
-    path('agregar-al-carrito/<int:producto_id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
+    path('carrito/', views.ver_carrito, name='ver_carrito'),
+    path('añadir_carrito/<int:producto_id>', views.añadir_al_carrito, name='añadir_carrito'),
+    path('vaciar_carrito/', views.vaciar_carrito, name='vaciar_carrito'),
+    path('confirmar_compra/', views.confirmar_compra, name='confirmar_compra'),
+    path('pedido/', views.pedido, name='pedido'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
