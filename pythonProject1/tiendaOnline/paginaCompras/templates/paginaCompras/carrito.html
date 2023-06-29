@@ -1,0 +1,18 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito de compra</title>
+</head>
+<body>
+    <h1>Carrito de compra</h1>
+    <p>Usuario: {{ carrito.usuario }}</p>
+    <p>Total: {{ carrito.total }}</p>
+
+    <h2>Productos en el carrito:</h2>
+    <ul>
+        {% for producto in productos %}
+            <li>{{ producto.nombre }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

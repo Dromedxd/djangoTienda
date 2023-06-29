@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Producto
+from .models import Producto, Carrito
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegistroForm
@@ -77,3 +77,25 @@ def productos_por_categoria(request, categoria):
         'categorias': categorias,
     }
     return render(request, 'Paginacompras/productos_por_categoria.html', context)
+
+def carrito_usuario(request):
+    # Obtener el carrito del usuario actual
+    carrito = Carrito.objects.get(usuario=request.user)
+
+    # Obtener los productos del carrito
+    productos = carrito.productos.all()
+
+    context = {
+        'carrito': carrito,
+        'productos': productos
+    }
+
+    return render(request, 'Paginacompras/carrito.html', context)
+
+
+def agregar_al_carrito(request, producto_id):
+    producto = Producto.objects.get(id=producto_id)
+    carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+    carrito.productos.add(producto)
+    carrito.actualizar_total()
+    return redirect('Paginacompras/carrito.html')

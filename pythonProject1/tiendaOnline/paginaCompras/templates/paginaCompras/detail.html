@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +9,13 @@
     <p>{{ producto.descripcion }}</p>
     <p>Precio: {{ producto.precio }}</p>
     <p>Categoría: {{ producto.categoria }}</p>
-    <img src="{{ producto.imagen.url }}" alt="Imagen del producto">
+    <img src="{{ producto.imagen }}" alt="Imagen del producto">
+
+    <form method="POST" action="{% url 'agregar_al_carrito' producto.id %}">
+        {% csrf_token %}
+        <button type="submit">Añadir al carrito</button>
+    </form>
+
 {% endif %}
 </body>
 </html>
