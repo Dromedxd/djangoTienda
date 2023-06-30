@@ -14,11 +14,8 @@
     {% if user.is_authenticated %}
     <p>Bienvenido, {{ user.username }}</p>
     <a href="{% url 'logout' %}">Cerrar sesión</a>
-    {% else %}
-    <p>Bienvenido, regístrese o acceda para ver nuestros distintos cafés</p>
-    <a href="{% url 'login' %}">Acceder</a>
-    <a href="{% url 'registro' %}">Registrarse</a>
-    {% endif %}
+
+
   </nav>
   <div id="carrito">
     <a href="{% url 'ver_carrito' %}">
@@ -56,9 +53,12 @@
 
 </main>
 <footer>
-			<p>Hecho por Alexander Van Den Heuvel Cabeza</p>
+  <p>Hecho por Alexander Van Den Heuvel Cabeza</p>
 </footer>
 </body>
-
-
+{% else %}
+    <p>Bienvenido, regístrese o acceda para ver nuestros distintos cafés</p>
+    <a href="{% url 'login' %}">Acceder</a>
+    <a href="{% url 'registro' %}">Registrarse</a>
+{% endif %}
 </html>

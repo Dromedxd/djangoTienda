@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>Registro</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/estilo.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estiloLogin.css' %}">
 </head>
 <body>
-    <h1>Registro</h1>
-    <form method="post">
+    <form id="correo" method="post">
+        <h1>Registro</h1>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Registrarse</button>

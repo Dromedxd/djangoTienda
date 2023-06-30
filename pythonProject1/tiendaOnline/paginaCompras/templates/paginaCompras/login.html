@@ -3,12 +3,11 @@
 <head>
     <title>Iniciar sesión</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/estilo.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estiloLogin.css' %}">
 </head>
 <body>
-    <h1>Iniciar sesión</h1>
-
     <form method="post">
+        <h1>Iniciar sesión</h1>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Iniciar sesión</button>
