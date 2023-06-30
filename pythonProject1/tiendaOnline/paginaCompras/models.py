@@ -26,6 +26,12 @@ class Carrito(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
+    def calcular_total(self):
+        total = 0
+        for item in self.items.all():
+            total += item.producto.precio * item.cantidad
+        self.total = total
+        self.save()
     def __str__(self):
         return f"Carrito del usuario: {self.usuario.username}"
 
@@ -34,6 +40,7 @@ class RegistroCompra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     contenido_carrito = models.TextField()
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return f"Registro de compra del usuario: {self.usuario.username}"

@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Título</title>
-     {% load static %}
+    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/estilo.css' %}">
 </head>
 <body>
     <h1>Página de Pedido</h1>
     <h2>Contenido del Carrito:</h2>
     <p>{{ contenido_carrito }}</p>
+    <p>Total: {{ registro_compra.total }}</p>
 </body>
 </html>

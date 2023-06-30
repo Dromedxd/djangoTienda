@@ -16,6 +16,8 @@
         {% endfor %}
     </ul>
 
+    <p>Total: {{ carrito.total }}</p>
+
     <form action="{% url 'vaciar_carrito' %}" method="POST">
         {% csrf_token %}
         <button type="submit">Vaciar Carrito</button>

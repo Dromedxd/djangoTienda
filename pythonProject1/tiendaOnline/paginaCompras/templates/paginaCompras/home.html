@@ -9,7 +9,7 @@
 <body>
 
 <header>
-  <h1>Cafeteria Online</h1>
+  <a href="{% url 'home' %}"><h1>Cafeteria Online</h1></a>
   <nav>
     {% if user.is_authenticated %}
     <p>Bienvenido, {{ user.username }}</p>
@@ -27,27 +27,38 @@
   </div>
 </header>
 
-<h3>Categorias</h3>
+<main>
+  <div id="categorias">
+    <h3>Tipos de café</h3>
+    <form method="GET" action="{% url 'buscar' %}">
+      <input type="text" name="q" placeholder="Buscar...">
+      <button type="submit">Buscar</button>
+    </form>
+    <ul>
+      {% for categoria in categorias %}
+      <li><a href="{% url 'productos_por_categoria' categoria.categoria %}">{{ categoria.categoria }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
 
 
-<form method="GET" action="{% url 'buscar' %}">
-  <input type="text" name="q" placeholder="Buscar...">
-  <button type="submit">Buscar</button>
-</form>
 
-<ul>
-  {% for categoria in categorias %}
-  <li><a href="{% url 'productos_por_categoria' categoria.categoria %}">{{ categoria.categoria }}</a></li>
-  {% endfor %}
-</ul>
+  <div class="grid-container" id="contenido-principal">
+    {% for producto in productos %}
+    <a href="{% url 'detail' producto.id %}">
+      <div class="grid-item">
+        <h4>{{ producto.nombre }}</h4>
+        <div id="cuadrofoto" style="background-image: url({{ producto.imagen }})"></div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
 
-
-{% for producto in productos %}
-<a href="{% url 'detail' producto.id %}">
-  <h4>{{ producto.nombre }}</h4>
-  <img src="{{ producto.imagen }}" alt="Imagen del producto">
-</a>
-{% endfor %}
-
+</main>
+<footer>
+			<p>Hecho por Alexander Van Den Heuvel Cabeza</p>
+</footer>
 </body>
+
+
 </html>

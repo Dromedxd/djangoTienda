@@ -9,7 +9,7 @@ from django.urls import path
 
 
 urlpatterns = [
-    path("", views.home, name="home"),
+    path("home", views.home, name="home"),
     path("detail/<int:producto_id>", views.detail, name="detail"),
     path("productos_por_categoria/<str:categoria>", views.productos_por_categoria, name="productos_por_categoria"),
     path("buscar/", views.buscar, name="buscar"),

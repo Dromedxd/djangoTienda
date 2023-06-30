@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Producto, Carrito, ItemCarrito
+from .models import Producto, Carrito, ItemCarrito,RegistroCompra
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegistroForm
 from .forms import LoginForm
 from django.core.exceptions import ObjectDoesNotExist
-from .models import RegistroCompra
+
+
 
 
 def home(request):
@@ -33,7 +34,7 @@ def registro(request):
         form = RegistroForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Redirige al usuario al inicio de sesión después del registro
+            return redirect('login')
     else:
         form = RegistroForm()
     return render(request, 'Paginacompras/registro.html', {'form': form})
@@ -78,11 +79,14 @@ def detail(request, producto_id):
     }
     return render(request, 'Paginacompras/detail.html', context)
 
+
 def ver_carrito(request):
     try:
         carrito = Carrito.objects.get(usuario=request.user)
     except ObjectDoesNotExist:
         carrito = Carrito.objects.create(usuario=request.user)
+
+    carrito.calcular_total()  # Calcular el precio total del carrito
 
     return render(request, 'Paginacompras/carrito.html', {'carrito': carrito})
 
@@ -111,7 +115,9 @@ def vaciar_carrito(request):
     return redirect('ver_carrito')
 
 
-from .models import RegistroCompra
+
+
+
 
 
 def confirmar_compra(request):
@@ -122,24 +128,27 @@ def confirmar_compra(request):
         for item in carrito.items.all():
             contenido_carrito += f"{item.producto.nombre} - Cantidad: {item.cantidad}\n"
 
-        registro = RegistroCompra.objects.create(usuario=request.user, contenido_carrito=contenido_carrito)
+        # Obtener el total del carrito
+        total_carrito = carrito.total
+
+        # Crear el registro de compra con el contenido y el total del carrito
+        registro = RegistroCompra.objects.create(usuario=request.user, contenido_carrito=contenido_carrito, total=total_carrito)
 
         carrito.items.all().delete()
 
         return redirect('pedido')
 
     elif request.method == 'GET':
-        # Lógica adicional para el método GET si es necesario
         return redirect('ver_carrito')
+
 def pedido(request):
     registro_compra = RegistroCompra.objects.filter(usuario=request.user).last()
     contenido_carrito = ""
     if registro_compra:
         contenido_carrito = registro_compra.contenido_carrito
-    # Aquí puedes realizar cualquier otra lógica adicional necesaria
 
     context = {
         'contenido_carrito': contenido_carrito,
+        'registro_compra': registro_compra,  # Agrega este campo al contexto
     }
     return render(request, 'Paginacompras/pedido.html', context)
-
