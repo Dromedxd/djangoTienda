@@ -23,9 +23,13 @@ def home(request):
 
 def buscar(request):
     query = request.GET.get('q')
+    username = request.user.username
     productos = Producto.objects.filter(Q(nombre__icontains=query))
+    categorias = Producto.objects.values('categoria').distinct()
     context = {
-        'productos': productos
+        'productos': productos,
+        'categorias': categorias,
+        'username': username,
     }
     return render(request, 'Paginacompras/buscar.html', context)
 
