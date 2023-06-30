@@ -33,7 +33,7 @@ form input[type="email"]
   border-radius: 5px;
 }
 
-form button {
+button {
   padding: 10px 20px;
   background-color: #975012;
   color: #fff;

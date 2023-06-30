@@ -26,24 +26,69 @@
 }
     </script>
 </head>
-
 <body>
+<header>
+  <a href="{% url 'home' %}"><h1>Cafeteria Online</h1></a>
+  <nav>
+    {% if user.is_authenticated %}
+    <p>Bienvenido, {{ user.username }}</p>
+    <a href="{% url 'logout' %}">Cerrar sesión</a>
 
-{% if user.is_authenticated %}
 
+  </nav>
+  <div id="carrito">
+    <a href="{% url 'ver_carrito' %}">
+      <img src="/media/productos/carrito.png" alt="Carrito de compra">
+    </a>
+  </div>
+</header>
+
+<main>
+  <div id="categorias">
+    <h3>Tipos de café</h3>
+    <form method="GET" action="{% url 'buscar' %}">
+      <input type="text" name="q" placeholder="Buscar...">
+      <button type="submit">Buscar</button>
+    </form>
+    <ul>
+      {% for categoria in categorias %}
+      <li><a href="{% url 'productos_por_categoria' categoria.categoria %}">{{ categoria.categoria }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+    <div class="grid-container" id="contenido-principal">
     <h2>{{ producto.nombre }}</h2>
-    <p>{{ producto.descripcion }}</p>
+    <p id="detail">{{ producto.descripcion }}</p>
     <p>Precio: {{ producto.precio }}</p>
-    <p>Categoría: {{ producto.categoria }}</p>
-    <img src="{{ producto.imagen }}" alt="Imagen del producto" onclick="showDetails()">
+    <p>Categoría: {{ producto.categoria }} <br><br> Haz clic en la imagen para mas información</p>
 
 
+    <div onclick="showDetails()" id="cuadrofoto" style="background-image: url({{ producto.imagen }})"></div>
     <form id="add-to-cart-form" method="POST" action="{% url 'añadir_carrito' producto.id %}">
         {% csrf_token %}
         <input type="hidden" name="quantity" id="quantity-input">
         <button type="button" onclick="confirmAddToCart()">Añadir al carrito</button>
+
+
+
     </form>
-    <a href="{% url 'ver_carrito' %}" class="btn btn-primary">Ir al carrito de compra</a>
-{% endif %}
+
+      </div>
+    </a>
+
+  </div>
+
+
+
+</main>
+<footer>
+  <p>Hecho por Alexander Van Den Heuvel Cabeza</p>
+</footer>
 </body>
+{% else %}
+    <p>Bienvenido, regístrese o acceda para ver nuestros distintos cafés</p>
+    <a href="{% url 'login' %}">Acceder</a>
+    <a href="{% url 'registro' %}">Registrarse</a>
+{% endif %}
 </html>

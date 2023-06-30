@@ -77,11 +77,16 @@ def productos_por_categoria(request, categoria):
 
 
 def detail(request, producto_id):
+    username = request.user.username
     producto = Producto.objects.get(id=producto_id)
+    categorias = Producto.objects.values('categoria').distinct()
     context = {
-        'producto': producto
+        'producto': producto,
+        'categorias': categorias,
+        'username': username,
     }
     return render(request, 'Paginacompras/detail.html', context)
+
 
 
 def ver_carrito(request):
