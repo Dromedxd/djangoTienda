@@ -95,7 +95,7 @@ def ver_carrito(request):
     except ObjectDoesNotExist:
         carrito = Carrito.objects.create(usuario=request.user)
 
-    carrito.calcular_total()  # Calcular el precio total del carrito
+    carrito.calcular_total()
 
     return render(request, 'Paginacompras/carrito.html', {'carrito': carrito})
 
@@ -137,10 +137,10 @@ def confirmar_compra(request):
         for item in carrito.items.all():
             contenido_carrito += f"{item.producto.nombre} - Cantidad: {item.cantidad}\n"
 
-        # Obtener el total del carrito
+
         total_carrito = carrito.total
 
-        # Crear el registro de compra con el contenido y el total del carrito
+
         registro = RegistroCompra.objects.create(usuario=request.user, contenido_carrito=contenido_carrito, total=total_carrito)
 
         carrito.items.all().delete()
@@ -158,6 +158,6 @@ def pedido(request):
 
     context = {
         'contenido_carrito': contenido_carrito,
-        'registro_compra': registro_compra,  # Agrega este campo al contexto
+        'registro_compra': registro_compra,
     }
     return render(request, 'Paginacompras/pedido.html', context)

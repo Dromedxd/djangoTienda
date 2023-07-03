@@ -55,7 +55,6 @@ nav ul li a {
   height: auto;
 }
 
-/* Estilos del contenido principal */
 main {
   padding: 20px;
   margin-bottom:20px;
@@ -122,7 +121,7 @@ main {
 
 .producto h4 {
   margin-top: 10px;
-  margin-bottom: 10px; /* Agrega un margen inferior de 10px */
+  margin-bottom: 10px;
 }
 
 
